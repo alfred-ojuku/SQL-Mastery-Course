@@ -9,4 +9,15 @@ SELECT invoice_id,
        due_date,
        payment_date
 FROM invoices
-WHERE (invoice_total - payment_total) > 0
+WHERE (invoice_total - payment_total) > 0;
+
+-- DELETING ROWS
+DELETE FROM invoices_with_balance
+WHERE invoice_id = 1;
+
+-- UPDATING
+UPDATE invoices_with_balance
+SET due_date = DATE_ADD(due_date, INTERVAL 2 DAY)
+WHERE invoice_id = 2
+
+
