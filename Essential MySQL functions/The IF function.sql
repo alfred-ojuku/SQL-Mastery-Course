@@ -1,8 +1,6 @@
 SELECT order_id,
 	   order_date,
-       IF(YEAR(order_date) = YEAR('2019-10-1'),
-          'Active',
-           'Archived') AS status
+       IF(YEAR(order_date) = YEAR('2019-10-1'), 'Active', 'Archived') AS status
 FROM orders;
 
 -- EXERCISE
