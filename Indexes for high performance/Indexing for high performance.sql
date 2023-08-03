@@ -55,5 +55,27 @@ WHERE MATCH(title, body) AGAINST('"handling a form in react"' IN BOOLEAN MODE);
 USE sql_store;
 SHOW INDEXES IN customers;
 
+CREATE INDEX idx_state_points ON customers(state, points);
+EXPLAIN SELECT customer_id FROM customers
+WHERE state = 'CA' and points > 1000;
 
+DROP INDEX idx_state_points ON customers;
+
+-- Order of columns in composite indexes
+EXPLAIN SELECT customer_id
+FROM customers
+USE INDEX (idx_state_lastname)
+WHERE state = 'NY' AND last_name LIKE 'A%';
+
+SELECT
+     COUNT(DISTINCT(state)),
+     COUNT(DISTINCT(last_name))
+FROM customers;
+
+CREATE INDEX idx_state_lastname ON customers(state, last_name);
+DROP INDEX idx_lastname_state ON customers;
+
+EXPLAIN SELECT customer_id
+FROM customers
+WHERE last_name LIKE 'A%';
 
