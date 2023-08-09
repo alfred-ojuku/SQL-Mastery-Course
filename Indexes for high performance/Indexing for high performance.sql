@@ -79,3 +79,41 @@ EXPLAIN SELECT customer_id
 FROM customers
 WHERE last_name LIKE 'A%';
 
+-- When inexes are ignored
+CREATE INDEX idx_points ON customers(points);
+
+EXPLAIN SELECT customer_id
+        FROM customers
+        WHERE state = 'CA'
+        UNION
+        SELECT customer_id
+        FROM customers
+        WHERE points > 1000;
+   
+-- example 2   
+EXPLAIN SELECT customer_id FROM customers
+WHERE points + 10 > 2010;
+
+-- soln
+EXPLAIN SELECT customer_id FROM customers
+WHERE points > 2000;
+
+-- Using indexes for sorting
+SHOW INDEXES IN customers;
+
+EXPLAIN SELECT state, customer_id FROM customers
+ORDER BY state;
+
+EXPLAIN SELECT state, customer_id FROM customers
+ORDER BY first_name;  -- uses filesort to sort the columns. Filesort is an expensive operation.
+
+
+SELECT state, customer_id FROM customers
+ORDER BY points ;  
+
+SHOW STATUS LIKE 'last_query_cost';
+
+-- Covering indexes
+EXPLAIN SELECT *
+FROM customers
+ORDER BY state;
